@@ -1,0 +1,4 @@
+bin
+Taskfile.yml
+.env
+**.csv
