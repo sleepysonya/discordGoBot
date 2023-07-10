@@ -7,11 +7,11 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
-	storage "github.com/scraly/learning-go-by-examples/go-gopher-bot-discord/util"
+	storage "github.com/sleepysonya/discordGoBot/util"
 )
 
 var (
-	BotToken string = storage.Token
+	BotToken string = storage.GetEnvVar("BOT_TOKEN")
 )
 var s *discordgo.Session
 

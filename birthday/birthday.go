@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	storage "github.com/scraly/learning-go-by-examples/go-gopher-bot-discord/util"
+	storage "github.com/sleepysonya/discordGoBot/util"
 )
 
 func AddCol(name string, day string, month string) string {

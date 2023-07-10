@@ -9,16 +9,16 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/scraly/learning-go-by-examples/go-gopher-bot-discord/birthday"
-	randomCommand "github.com/scraly/learning-go-by-examples/go-gopher-bot-discord/random"
-	"github.com/scraly/learning-go-by-examples/go-gopher-bot-discord/reminder"
-	storage "github.com/scraly/learning-go-by-examples/go-gopher-bot-discord/util"
+	"github.com/sleepysonya/discordGoBot/birthday"
+	randomCommand "github.com/sleepysonya/discordGoBot/random"
+	"github.com/sleepysonya/discordGoBot/reminder"
+	storage "github.com/sleepysonya/discordGoBot/util"
 )
 
 var (
-	GuildID        string = storage.GuildID
-	BotToken       string = storage.Token
-	RemoveCommands bool   = storage.RemoveCommands
+	GuildID        string = storage.GetEnvVar("GUILD_ID")
+	BotToken       string = storage.GetEnvVar("BOT_TOKEN")
+	RemoveCommands bool   = storage.GetEnvVar("RMCM") == "true"
 	rolls          int64
 	sides          int64
 	YearNow        float64 = float64(time.Now().Year())
@@ -63,6 +63,17 @@ var (
 			},
 		},
 		{
+			Name:        "text-completion",
+			Description: "Text completion command",
+			Options: []*discordgo.ApplicationCommandOption{
+				{
+					Type:        discordgo.ApplicationCommandOptionString,
+					Name:        "text",
+					Description: "Text to complete",
+				},
+			},
+		},
+		{
 			Name:        "remind-in",
 			Description: "Remind command",
 			Type:        discordgo.ChatApplicationCommand,
@@ -87,9 +98,12 @@ var (
 					Required:    true,
 					Choices: []*discordgo.ApplicationCommandOptionChoice{
 						{
-
+							Name:  "second(s)",
+							Value: 1,
+						},
+						{
 							Name:  "minute(s)",
-							Value: 10,
+							Value: 60,
 						},
 						{
 							Name:  "hour(s)",
@@ -178,6 +192,21 @@ var (
 				},
 			})
 			reminder.StartReminder(newTime, message, userId, channel)
+		},
+		"text-completion": func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+
+			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseChannelMessageWithSource,
+				Data: &discordgo.InteractionResponseData{
+					Content: "Text completion command called",
+				},
+			})
+			updatedText := "Hello, my name is Wowo and I am a"
+			s.InteractionResponseEdit(i.Interaction, &discordgo.WebhookEdit{
+				Content: &updatedText,
+			},
+			)
+
 		},
 		"random": func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			rolls = i.ApplicationCommandData().Options[0].IntValue()

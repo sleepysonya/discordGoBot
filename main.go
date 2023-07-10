@@ -7,16 +7,15 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/go-co-op/gocron"
-	"github.com/scraly/learning-go-by-examples/go-gopher-bot-discord/birthday"
-	storage "github.com/scraly/learning-go-by-examples/go-gopher-bot-discord/util"
-
-	register "github.com/scraly/learning-go-by-examples/go-gopher-bot-discord/test"
+	"github.com/sleepysonya/discordGoBot/birthday"
+	register "github.com/sleepysonya/discordGoBot/test"
+	storage "github.com/sleepysonya/discordGoBot/util"
 )
 
 var (
-	GuildID        string = storage.GuildID
-	BotToken       string = storage.Token
-	RemoveCommands bool   = storage.RemoveCommands
+	GuildID        string = storage.GetEnvVar("GUILDID")
+	BotToken       string = storage.GetEnvVar("BOT_TOKEN")
+	RemoveCommands bool   = storage.GetEnvVar("RMCM") == "true"
 )
 
 const KuteGoAPIURL = "https://ibb.co/tMqStgz"

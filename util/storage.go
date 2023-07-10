@@ -1,7 +1,6 @@
 package storage
 
 import (
-	"flag"
 	"log"
 	"os"
 
@@ -35,14 +34,6 @@ type ReminderInBoundData struct {
 type ReminderReturn struct {
 	Id   string
 	Data ReminderInBoundData
-}
-
-func init() {
-	flag.StringVar(&Token, "t", "", "Bot Token")
-	flag.StringVar(&GuildID, "g", "", "Guild ID")
-	flag.BoolVar(&RemoveCommands, "r", false, "RemoveCommands")
-	flag.StringVar(&OpenAiToken, "o", "", "OpenAiToken")
-	flag.Parse()
 }
 
 func GetEnvVar(key string) string {
