@@ -43,3 +43,14 @@ func GetEnvVar(key string) string {
 	}
 	return os.Getenv(key)
 }
+
+type Generation struct {
+	Id            string `json:"id"`
+	Text          string `json:"text"`
+	Finish_reason string `json:"finish_reason"`
+}
+type CohereResponse struct {
+	Id          string       `json:"id"`
+	Generations []Generation `json:"generations"`
+	Prompt      string       `json:"prompt"`
+}

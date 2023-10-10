@@ -10,6 +10,7 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/sleepysonya/discordGoBot/birthday"
+	generation "github.com/sleepysonya/discordGoBot/generation"
 	randomCommand "github.com/sleepysonya/discordGoBot/random"
 	"github.com/sleepysonya/discordGoBot/reminder"
 	storage "github.com/sleepysonya/discordGoBot/util"
@@ -70,6 +71,7 @@ var (
 					Type:        discordgo.ApplicationCommandOptionString,
 					Name:        "text",
 					Description: "Text to complete",
+					Required:    true,
 				},
 			},
 		},
@@ -195,17 +197,20 @@ var (
 		},
 		"text-completion": func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
+			incomingMessage := fmt.Sprint(i.ApplicationCommandData().Options[0].Value)
+
+			fmt.Println("Text completion command called")
+
+			// Generate response
+			var cohereResponse = generation.GenerateResponse(incomingMessage)
+
+			// Send response
 			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 				Type: discordgo.InteractionResponseChannelMessageWithSource,
 				Data: &discordgo.InteractionResponseData{
-					Content: "Text completion command called",
+					Content: cohereResponse,
 				},
 			})
-			updatedText := "Hello, my name is Wowo and I am a"
-			s.InteractionResponseEdit(i.Interaction, &discordgo.WebhookEdit{
-				Content: &updatedText,
-			},
-			)
 
 		},
 		"random": func(s *discordgo.Session, i *discordgo.InteractionCreate) {
