@@ -49,8 +49,3 @@ type Generation struct {
 	Text          string `json:"text"`
 	Finish_reason string `json:"finish_reason"`
 }
-type CohereResponse struct {
-	Id          string       `json:"id"`
-	Generations []Generation `json:"generations"`
-	Prompt      string       `json:"prompt"`
-}

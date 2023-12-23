@@ -10,7 +10,6 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/sleepysonya/discordGoBot/birthday"
-	generation "github.com/sleepysonya/discordGoBot/generation"
 	randomCommand "github.com/sleepysonya/discordGoBot/random"
 	"github.com/sleepysonya/discordGoBot/reminder"
 	storage "github.com/sleepysonya/discordGoBot/util"
@@ -195,24 +194,6 @@ var (
 			})
 			reminder.StartReminder(newTime, message, userId, channel)
 		},
-		"text-completion": func(s *discordgo.Session, i *discordgo.InteractionCreate) {
-
-			incomingMessage := fmt.Sprint(i.ApplicationCommandData().Options[0].Value)
-
-			fmt.Println("Text completion command called")
-
-			// Generate response
-			var cohereResponse = generation.GenerateResponse(incomingMessage)
-
-			// Send response
-			s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-				Type: discordgo.InteractionResponseChannelMessageWithSource,
-				Data: &discordgo.InteractionResponseData{
-					Content: cohereResponse,
-				},
-			})
-
-		},
 		"random": func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			rolls = i.ApplicationCommandData().Options[0].IntValue()
 			sides = i.ApplicationCommandData().Options[1].IntValue()
@@ -231,7 +212,7 @@ var (
 )
 
 func init() {
-
+	fmt.Println("Adding commands...")
 	s.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if h, ok := commandHandlers[i.ApplicationCommandData().Name]; ok {
 			h(s, i)
@@ -245,10 +226,11 @@ func P() {
 	fmt.Println("Starting bot...")
 	s, er := discordgo.New("Bot " + BotToken)
 	fmt.Println(BotToken)
-
+	fmt.Println(er)
 	if er != nil {
 		log.Fatalf("Cannot create a session: %v", er)
 	}
+	fmt.Println("Session created")
 	s.AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
 		log.Printf("Logged in as: %v#%v", s.State.User.Username, s.State.User.Discriminator)
 	})
